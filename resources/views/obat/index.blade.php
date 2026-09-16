@@ -848,6 +848,19 @@
                         );
                         loadData(currentPage);
                     },
+                    error: function(xhr) {
+                        // Misal datanya keburu dihapus / server mati: tutup modal, beri pesan, refresh
+                        $('#modal-delete-obat').modal('hide');
+                        let msg = xhr.status === 404
+                            ? 'Data tidak ditemukan (mungkin sudah dihapus). Tabel akan di-refresh.'
+                            : 'Gagal menghapus data. Coba lagi.';
+                        $('#page-alert').html(
+                            '<div class="alert alert-danger alert-dismissible fade show">' +
+                            msg +
+                            '<button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>'
+                        );
+                        loadData(currentPage);
+                    },
                     complete: function() {
                         $('#btn-confirm-delete').prop('disabled', false).text('Ya, Hapus');
                     }
