@@ -483,12 +483,12 @@
                                     '<td>' + escapeHtml(formatTanggal(obat.expired_date)) + '</td>' +
                                     '<td class="text-nowrap">' +
                                     '<button type="button" class="btn btn-sm btn-info btn-detail" data-id="' +
-                                    obat.id + '">Lihat</button> ' +
+                                    obat.id + '" title="Lihat"><i class="bi bi-eye"></i></button> ' +
                                     '<button type="button" class="btn btn-sm btn-warning btn-edit" data-id="' +
-                                    obat.id + '">Edit</button> ' +
+                                    obat.id + '" title="Edit"><i class="bi bi-pencil"></i></button> ' +
                                     '<button type="button" class="btn btn-sm btn-danger btn-delete" data-id="' +
                                     obat.id + '" data-name="' + escapeHtml(obat.name) +
-                                    '">Hapus</button>' +
+                                    '" title="Hapus"><i class="bi bi-trash"></i></button>' +
                                     '</td>' +
                                     '</tr>';
                             });
