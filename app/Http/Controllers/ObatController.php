@@ -19,8 +19,13 @@ class ObatController extends Controller
 
     public function data(Request $request)
     {
+        // Kolom yang boleh di-sort (whitelist agar aman dari injection)
+        $sortable = ['code', 'name', 'purchase_price', 'selling_price', 'stock', 'expired_date'];
+        $sort = in_array($request->sort, $sortable) ? $request->sort : 'name';
+        $dir = $request->dir === 'desc' ? 'desc' : 'asc';
+
         $obat = Obat::filter($request->only(['search', 'category', 'stock_status']))
-            ->orderBy('name')
+            ->orderBy($sort, $dir)
             ->paginate(10);
 
         // Ambil daftar kategori unik untuk dropdown filter

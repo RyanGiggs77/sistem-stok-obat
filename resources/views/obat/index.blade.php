@@ -47,15 +47,15 @@
                     <table class="table table-hover table-bordered align-middle">
                         <thead class="table-light">
                             <tr>
-                                <th>Kode</th>
-                                <th>Nama Obat</th>
+                                <th class="sortable" data-sort="code" style="cursor: pointer;">Kode <span class="sort-arrow"></span></th>
+                                <th class="sortable" data-sort="name" style="cursor: pointer;">Nama Obat <span class="sort-arrow"></span></th>
                                 <th>Kategori</th>
                                 <th>Satuan</th>
-                                <th>Harga Beli</th>
-                                <th>Harga Jual</th>
-                                <th>Stok</th>
+                                <th class="sortable" data-sort="purchase_price" style="cursor: pointer;">Harga Beli <span class="sort-arrow"></span></th>
+                                <th class="sortable" data-sort="selling_price" style="cursor: pointer;">Harga Jual <span class="sort-arrow"></span></th>
+                                <th class="sortable" data-sort="stock" style="cursor: pointer;">Stok <span class="sort-arrow"></span></th>
                                 <th>Status</th>
-                                <th>Kadaluarsa</th>
+                                <th class="sortable" data-sort="expired_date" style="cursor: pointer;">Kadaluarsa <span class="sort-arrow"></span></th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -341,9 +341,30 @@
             // Variabel untuk menyimpan halaman aktif & timer search
             let currentPage = 1;
             let searchTimer = null;
+            let sortBy = 'name';
+            let sortDir = 'asc';
 
             // Pertama kali halaman dibuka -> langsung ambil data halaman 1
             loadData(1);
+
+            // Klik header kolom -> ganti sorting (klik 2x membalik arah)
+            $('th.sortable').on('click', function() {
+                let col = $(this).data('sort');
+                if (sortBy === col) {
+                    sortDir = sortDir === 'asc' ? 'desc' : 'asc';
+                } else {
+                    sortBy = col;
+                    sortDir = 'asc';
+                }
+                updateSortArrows();
+                loadData(1);
+            });
+
+            function updateSortArrows() {
+                $('th.sortable .sort-arrow').text('');
+                $('th.sortable[data-sort="' + sortBy + '"] .sort-arrow').text(sortDir === 'asc' ? '▲' : '▼');
+            }
+            updateSortArrows();
 
             // Kalau user mengetik di search, tunggu 500ms baru request
             // supaya tidak request tiap 1 huruf
@@ -438,7 +459,9 @@
                         page: page,
                         search: $('#search').val(),
                         category: $('#filter-category').val(),
-                        stock_status: $('#filter-stock-status').val()
+                        stock_status: $('#filter-stock-status').val(),
+                        sort: sortBy,
+                        dir: sortDir
                     },
                     beforeSend: function() {
                         // Tampilkan loading saat request berjalan
