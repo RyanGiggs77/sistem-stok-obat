@@ -14,6 +14,14 @@
 </head>
 
 <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="{{ route('obat.index') }}">
+                <i class="bi bi-capsule"></i> Stok Obat
+            </a>
+        </div>
+    </nav>
+
     <main>
         @yield('content')
     </main>
